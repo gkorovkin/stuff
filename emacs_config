@@ -1,36 +1,66 @@
-; start package.el with emacs
+;; start package.el with emacs
 (require 'package)
-; add MELPA to repository list
+
+;; add servers to repository list
 (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
-;; initialize package.el
+
+;; reload everything
 (package-initialize)
-;; more
+
+(defun ensure-package-installed (&rest packages)
+  "Assure every package is installed, ask for installation if it’s not.
+Return a list of installed packages or nil for every skipped package."
+  (mapcar
+   (lambda (package)
+     ;; (package-installed-p 'evil)
+     (if (package-installed-p package)
+         nil
+       (if (y-or-n-p (format "Package %s is missing. Install it? " package))
+           (package-install package)
+         package)))
+   packages))
+
+;; make sure to have downloaded archive description.
+;; Or use package-archive-contents as suggested by Nicolas Dudebout
+(or (file-exists-p package-user-dir)
+    (package-refresh-contents))
+
+;; detect that we got all packages
+(ensure-package-installed 'auto-complete
+			  'tangotango-theme
+			  'yasnippet
+			  'slime
+			  'jedi
+			  )
+
+;; reload everything
+(package-initialize)
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; start auto-complete with emacs
+;; first of all try to find package - if doesnt exists then try to install and quit
 ; start auto-complete with emacs
 (require 'auto-complete)
 ; do default config for auto-complete
 (require 'auto-complete-config)
 (ac-config-default)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; open theme
-;;(require 'color-theme)
-;;(require 'naquadah-theme)
-;;(color-theme-initialize)
-;;(color-theme-classic)
-(require 'tangotango-theme)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;lines number
 (global-linum-mode 1)
 ;; disabling linum for eshell-mode
 (setq linum-disabled-modes-list '(eshell-mode wl-summary-mode compilation-mode))
 (defun linum-on () (unless (or (minibufferp) (member major-mode linum-disabled-modes-list) ) (linum-mode 1) )  )
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; start yasnippet with emacs
 (require 'yasnippet)
 (yas-global-mode 1)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; parent matching
+;; Visual stuff
 (show-paren-mode 1)
 ;; drop *bars
 (scroll-bar-mode -1)
@@ -38,20 +68,49 @@
 (setq inhibit-startup-message t)
 (tool-bar-mode -1)
 (menu-bar-mode -1)
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(add-to-list 'auto-mode-alist '("\\.cron\\(tab\\)?\\'" . crontab-mode))
-(add-to-list 'auto-mode-alist '("cron\\(tab\\)?\\."    . crontab-mode))
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; trying to setup fonts
-;;(set-default-font "-misc-fixed-medium-r-semicondensed--13-*-*-*-c-60-iso8859-1")
-(set-default-font "-misc-fixed-*-*-*--14-*-*-*-*-*-*-*")
+(require 'tangotango-theme)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;tab width
 (setq-default indent-tabs-mode t)
 (setq tab-width 4)
 (setq perl-indent-level 4)
 
-;;set window title name to current buffer name
-(setq frame-title-format "%b")
-;;(multiple-frames "%b" ("" invocation-name "@" system-name))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; adding syntax highlight modes
+(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
+(add-to-list 'auto-mode-alist '("\\.ice\\'" . c++-mode))
+(add-to-list 'auto-mode-alist '("\\.cron\\(tab\\)?\\'" . crontab-mode))
+(add-to-list 'auto-mode-alist '("cron\\(tab\\)?\\."    . crontab-mode))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Setup CLISP development env
+(require 'slime-autoloads)
+(setq slime-lisp-implementations
+     `((sbcl ("/opt/local/bin/sbcl"))
+       (abcl ("/opt/local/bin/abcl"))
+       (clisp ("/opt/local/bin/clisp"))))
+(slime-setup  '(slime-repl slime-asdf slime-fancy slime-banner))
+(setq inferior-lisp-program "sbcl")
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Setup Jedi (Python ) development env
+;;first detect if jedi installed
+(message "Python: Be sure you have following packages installed via pip: JEDI, EPC")
+(add-hook 'python-mode-hook 'jedi:setup)
+(setq jedi:complete-on-dot t)                 ; optional
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; mac meta vs command position
+(setq mac-option-modifier 'alt)
+(setq mac-command-modifier 'meta)
+(setq ns-function-modifier 'control)
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(prefer-coding-system 'utf-8)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; mac meta vs command position
+
+
 
