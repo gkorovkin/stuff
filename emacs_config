@@ -1,0 +1,56 @@
+; start package.el with emacs
+(require 'package)
+; add MELPA to repository list
+(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
+;; initialize package.el
+(package-initialize)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; start auto-complete with emacs
+(require 'auto-complete)
+; do default config for auto-complete
+(require 'auto-complete-config)
+(ac-config-default)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; open theme
+;;(require 'color-theme)
+;;(require 'naquadah-theme)
+;;(color-theme-initialize)
+;;(color-theme-classic)
+(require 'tangotango-theme)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;lines number
+(global-linum-mode 1)
+;; disabling linum for eshell-mode
+(setq linum-disabled-modes-list '(eshell-mode wl-summary-mode compilation-mode))
+(defun linum-on () (unless (or (minibufferp) (member major-mode linum-disabled-modes-list) ) (linum-mode 1) )  )
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; start yasnippet with emacs
+(require 'yasnippet)
+(yas-global-mode 1)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; parent matching
+(show-paren-mode 1)
+;; drop *bars
+(scroll-bar-mode -1)
+;;hide startup message
+(setq inhibit-startup-message t)
+(tool-bar-mode -1)
+(menu-bar-mode -1)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(add-to-list 'auto-mode-alist '("\\.cron\\(tab\\)?\\'" . crontab-mode))
+(add-to-list 'auto-mode-alist '("cron\\(tab\\)?\\."    . crontab-mode))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; trying to setup fonts
+;;(set-default-font "-misc-fixed-medium-r-semicondensed--13-*-*-*-c-60-iso8859-1")
+(set-default-font "-misc-fixed-*-*-*--14-*-*-*-*-*-*-*")
+
+;;tab width
+(setq-default indent-tabs-mode t)
+(setq tab-width 4)
+(setq perl-indent-level 4)
+
+;;set window title name to current buffer name
+(setq frame-title-format "%b")
+;;(multiple-frames "%b" ("" invocation-name "@" system-name))
+
