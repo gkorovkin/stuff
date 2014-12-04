@@ -110,7 +110,9 @@ Return a list of installed packages or nil for every skipped package."
 (prefer-coding-system 'utf-8)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; mac meta vs command position
+;; Node js projects
 
-
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; set buffer name like [hostname] buffer
+(setq my-hostname (substring (shell-command-to-string "/bin/hostname") 0 -1))
+(setq frame-title-format '("[" my-hostname "] %b @ %m"))
