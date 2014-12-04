@@ -116,3 +116,4 @@ Return a list of installed packages or nil for every skipped package."
 ;; set buffer name like [hostname] buffer
 (setq my-hostname (substring (shell-command-to-string "/bin/hostname") 0 -1))
 (setq frame-title-format '("[" my-hostname "] %b @ %m"))
+(setq backup-directory-alist `(("." . "~/.emacs.d/autosaves")))
