@@ -71,12 +71,6 @@ Return a list of installed packages or nil for every skipped package."
 (require 'tangotango-theme)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;tab width
-(setq-default indent-tabs-mode t)
-(setq tab-width 4)
-(setq perl-indent-level 4)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; adding syntax highlight modes
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 (add-to-list 'auto-mode-alist '("\\.ice\\'" . c++-mode))
@@ -126,4 +120,13 @@ Return a list of installed packages or nil for every skipped package."
 (defun my:add-semantic-to-autocomplete() (add-to-list 'ac-sources 'ac-source-semantic))
 (add-hook 'c-mode-common-hook 'my:add-semantic-to-autocomplete)
 (global-semantic-idle-scheduler-mode 1)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;tab width
+(setq-default indent-tabs-mode t)
+(setq default-tab-width 4)
+(setq-default c-basic-offset 4)
+(set-face-font 'default "DejaVu Sans Mono-10")
+;;(set-default-font "-*-fixed-medium-*-*-*-14-*-*-*-*-*-*-*")
+(setq bell-volume 0)
 
