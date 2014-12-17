@@ -42,6 +42,7 @@ Return a list of installed packages or nil for every skipped package."
 ;; first of all try to find package - if doesnt exists then try to install and quit
 ; start auto-complete with emacs
 (require 'auto-complete)
+(global-auto-complete-mode t)
 ; do default config for auto-complete
 (require 'auto-complete-config)
 (ac-config-default)
@@ -102,6 +103,7 @@ Return a list of installed packages or nil for every skipped package."
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
+(global-set-key [f13] 'recompile)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Node js projects
@@ -126,7 +128,28 @@ Return a list of installed packages or nil for every skipped package."
 (setq-default indent-tabs-mode t)
 (setq default-tab-width 4)
 (setq-default c-basic-offset 4)
-(set-face-font 'default "DejaVu Sans Mono-10")
+;;(set-face-font 'default "DejaVu Sans Mono-10")
 ;;(set-default-font "-*-fixed-medium-*-*-*-14-*-*-*-*-*-*-*")
 (setq bell-volume 0)
+(setq visible-bell 1)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; special mode for XCoder development
+(add-hook 'c++-mode-hook
+		  '(lambda()
+			(c-set-offset 'innamespace 0)
+			(c-set-offset 'inline-open 0)
+			)
+		  )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;Dont split windows more then two times vert and(or) horz
+(message "Current resolution %dx%d"     (x-display-pixel-height) (x-display-pixel-width))
+(setq split-height-threshold ( / (x-display-pixel-height) 2 ) )
+(setq split-width-threshold ( / (x-display-pixel-width)  2) )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; removing trailing witespaces before saving ( for c++ mode - Xcoder is pretty ass
+(defun format_sources() (delete-trailing-whitespace) (tabify (point-min) (point-max) ) )
+(add-hook 'c-mode-hook '(lambda() (add-to-list 'write-file-functions 'format_sources) ) )
+(add-hook 'c++-mode-hook '(lambda() (add-to-list 'write-file-functions 'format_sources) ) )
