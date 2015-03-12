@@ -12,18 +12,18 @@
 Return a list of installed packages or nil for every skipped package."
   (mapcar
    (lambda (package)
-     ;; (package-installed-p 'evil)
-     (if (package-installed-p package)
-         nil
-       (if (y-or-n-p (format "Package %s is missing. Install it? " package))
-           (package-install package)
-         package)))
+	 ;; (package-installed-p 'evil)
+	 (if (package-installed-p package)
+		 nil
+	   (if (y-or-n-p (format "Package %s is missing. Install it? " package))
+		   (package-install package)
+		 package)))
    packages))
 
 ;; make sure to have downloaded archive description.
 ;; Or use package-archive-contents as suggested by Nicolas Dudebout
 (or (file-exists-p package-user-dir)
-    (package-refresh-contents))
+	(package-refresh-contents))
 
 ;; detect that we got all packages
 (ensure-package-installed 'auto-complete
@@ -76,15 +76,15 @@ Return a list of installed packages or nil for every skipped package."
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 (add-to-list 'auto-mode-alist '("\\.ice\\'" . c++-mode))
 (add-to-list 'auto-mode-alist '("\\.cron\\(tab\\)?\\'" . crontab-mode))
-(add-to-list 'auto-mode-alist '("cron\\(tab\\)?\\."    . crontab-mode))
+(add-to-list 'auto-mode-alist '("cron\\(tab\\)?\\."	   . crontab-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Setup CLISP development env
 (require 'slime-autoloads)
 (setq slime-lisp-implementations
-     `((sbcl ("/opt/local/bin/sbcl"))
-       (abcl ("/opt/local/bin/abcl"))
-       (clisp ("/opt/local/bin/clisp"))))
+	 `((sbcl ("/opt/local/bin/sbcl"))
+	   (abcl ("/opt/local/bin/abcl"))
+	   (clisp ("/opt/local/bin/clisp"))))
 (slime-setup  '(slime-repl slime-asdf slime-fancy slime-banner))
 (setq inferior-lisp-program "sbcl")
 
@@ -93,7 +93,7 @@ Return a list of installed packages or nil for every skipped package."
 ;;first detect if jedi installed
 (message "Python: Be sure you have following packages installed via pip: JEDI, EPC")
 (add-hook 'python-mode-hook 'jedi:setup)
-(setq jedi:complete-on-dot t)                 ; optional
+(setq jedi:complete-on-dot t)				  ; optional
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; mac meta vs command position
@@ -115,7 +115,7 @@ Return a list of installed packages or nil for every skipped package."
 (setq backup-directory-alist `(("." . "~/.emacs.d/autosaves")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; setting up a semanticdb 
+;; setting up a semanticdb
 (semantic-mode 1)
 ; let's define a function which adds semantic as a suggestion backend to auto complete
 ; and hook this function to c-mode-common-hook
@@ -132,6 +132,7 @@ Return a list of installed packages or nil for every skipped package."
 ;;(set-default-font "-*-fixed-medium-*-*-*-14-*-*-*-*-*-*-*")
 (setq bell-volume 0)
 (setq visible-bell 1)
+(setq compilation-scroll-output t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; special mode for XCoder development
@@ -144,12 +145,25 @@ Return a list of installed packages or nil for every skipped package."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;Dont split windows more then two times vert and(or) horz
-(message "Current resolution %dx%d"     (x-display-pixel-height) (x-display-pixel-width))
+(message "Current resolution %dx%d"		(x-display-pixel-height) (x-display-pixel-width))
 (setq split-height-threshold ( / (x-display-pixel-height) 2 ) )
-(setq split-width-threshold ( / (x-display-pixel-width)  2) )
+(setq split-width-threshold ( / (x-display-pixel-width)	 2) )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; removing trailing witespaces before saving ( for c++ mode - Xcoder is pretty ass
 (defun format_sources() (delete-trailing-whitespace) (tabify (point-min) (point-max) ) )
 (add-hook 'c-mode-hook '(lambda() (add-to-list 'write-file-functions 'format_sources) ) )
 (add-hook 'c++-mode-hook '(lambda() (add-to-list 'write-file-functions 'format_sources) ) )
+(setq c-default-style "linux")
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(font-lock-string-face ((t (:foreground "#ad7fa8" :slant normal)))))
