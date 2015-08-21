@@ -31,6 +31,7 @@ Return a list of installed packages or nil for every skipped package."
 			  'yasnippet
 			  'slime
 			  'jedi
+			  'auto-complete-clang
 			  )
 
 ;; reload everything
@@ -46,6 +47,8 @@ Return a list of installed packages or nil for every skipped package."
 ; do default config for auto-complete
 (require 'auto-complete-config)
 (ac-config-default)
+(ac-set-trigger-key "TAB")
+(ac-set-trigger-key "<tab>")
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -57,8 +60,8 @@ Return a list of installed packages or nil for every skipped package."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; start yasnippet with emacs
-(require 'yasnippet)
-(yas-global-mode 1)
+;;(require 'yasnippet)
+;;(yas-global-mode 1)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Visual stuff
@@ -167,3 +170,47 @@ Return a list of installed packages or nil for every skipped package."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(font-lock-string-face ((t (:foreground "#ad7fa8" :slant normal)))))
+(setq ns-function-modifier 'control)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;http://stackoverflow.com/questions/8549351/c11-mode-or-settings-for-emacs
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; (add-hook
+;;	'c++-mode-hook
+;;	'(lambda()
+;;	;; We could place some regexes into c-mode-common-hook, but note that their evaluation order
+;;	;; matters.
+;;	(font-lock-add-keywords
+;;	 nil '(;; complete some fundamental keywords
+;;		   ("\\<\\(void\\|unsigned\\|signed\\|char\\|short\\|bool\\|int\\|long\\|float\\|double\\)\\>" . font-lock-keyword-face)
+;;		   ;; namespace names and tags - these are rendered as constants by cc-mode
+;;		   ("\\<\\(\\w+::\\)" . font-lock-function-name-face)
+;;		   ;;  new C++11 keywords
+;;		   ("\\<\\(alignof\\|alignas\\|constexpr\\|decltype\\|noexcept\\|nullptr\\|static_assert\\|thread_local\\|override\\|final\\)\\>" . font-lock-keyword-face)
+;;		   ("\\<\\(char16_t\\|char32_t\\)\\>" . font-lock-keyword-face)
+;;		   ;; PREPROCESSOR_CONSTANT, PREPROCESSORCONSTANT
+;;		   ("\\<[A-Z]*_[A-Z_]+\\>" . font-lock-constant-face)
+;;		   ("\\<[A-Z]\\{3,\\}\\>"  . font-lock-constant-face)
+;;		   ;; hexadecimal numbers
+;;		   ("\\<0[xX][0-9A-Fa-f]+\\>" . font-lock-constant-face)
+;;		   ;; integer/float/scientific numbers
+;;		   ("\\<[\\-+]*[0-9]*\\.?[0-9]+\\([ulUL]+\\|[eE][\\-+]?[0-9]+\\)?\\>" . font-lock-constant-face)
+;;		   ;; c++11 string literals
+;;		   ;;		L"wide string"
+;;		   ;;		L"wide string with UNICODE codepoint: \u2018"
+;;		   ;;		u8"UTF-8 string", u"UTF-16 string", U"UTF-32 string"
+;;		   ("\\<\\([LuU8]+\\)\".*?\"" 1 font-lock-keyword-face)
+;;		   ;;		R"(user-defined literal)"
+;;		   ;;		R"( a "quot'd" string )"
+;;		   ;;		R"delimiter(The String Data" )delimiter"
+;;		   ;;		R"delimiter((a-z))delimiter" is equivalent to "(a-z)"
+;;		   ("\\(\\<[uU8]*R\"[^\\s-\\\\()]\\{0,16\\}(\\)" 1 font-lock-keyword-face t) ; start delimiter
+;;		   (   "\\<[uU8]*R\"[^\\s-\\\\()]\\{0,16\\}(\\(.*?\\))[^\\s-\\\\()]\\{0,16\\}\"" 1 font-lock-string-face t)	 ; actual string
+;;		   (   "\\<[uU8]*R\"[^\\s-\\\\()]\\{0,16\\}(.*?\\()[^\\s-\\\\()]\\{0,16\\}\"\\)" 1 font-lock-keyword-face t) ; end delimiter
+
+;;		   ;; user-defined types (rather project-specific)
+;;		   ("\\<[A-Za-z_]+[A-Za-z_0-9]*_\\(type\\|ptr\\)\\>" . font-lock-type-face)
+;;		   ("\\<\\(xstring\\|xchar\\)\\>" . font-lock-type-face)
+;;		   ))
+;;	  ) t)
