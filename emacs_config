@@ -173,6 +173,15 @@ Return a list of installed packages or nil for every skipped package."
 (setq ns-function-modifier 'control)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; disabling linum mode for Fundamenta and log4j mode
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun disable-linum()
+  (global-linum-mode 0)
+  )
+(add-hook 'fundamental-mode 'disable-linum)
+(add-hook 'log4j-mode 'disable-linum)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;http://stackoverflow.com/questions/8549351/c11-mode-or-settings-for-emacs
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
